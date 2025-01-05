@@ -1,0 +1,4 @@
+{
+  "jest.jestCommandLine": "npm test --",
+  "cSpell.words": ["alled"]
+}

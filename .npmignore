@@ -1,5 +1,6 @@
 .vscode
 src
 .gitignore
+jest.config.json
 package-lock.json
 tsconfig.json
