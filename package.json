@@ -1,7 +1,7 @@
 {
   "name": "@wings-j/item",
   "version": "0.0.0",
-  "description": "Item with name, value and children. Especially useful for selections whose text for the users are different with the data for programmes.",
+  "description": "Item with name, value and children (like a tree). Especially useful for selections whose text for the users are different with the data for programmes.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

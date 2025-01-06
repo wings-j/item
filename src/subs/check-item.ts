@@ -40,6 +40,7 @@ class CheckItem<T = any> extends Item<T> {
 
     let origin = (source as any).check ?? {};
     let item = source as CheckItem;
+    Object.setPrototypeOf(item, CheckItem.prototype);
     item.check = Object.assign(assign?.(source) ?? new ItemCheck(item), origin);
 
     return item;
@@ -68,7 +69,6 @@ class CheckItem<T = any> extends Item<T> {
 class ItemCheck {
   _checked = false;
   item: CheckItem;
-  disabled = false;
   unlink = false; // The parent and children do not affect each other.
 
   get checked(): boolean {
@@ -115,12 +115,10 @@ class ItemCheck {
    * Constructor
    * @param [item] Host Item
    * @param [checked] Checked
-   * @param [disabled] Disabled
    * @param [unlink] Unlink
    */
-  constructor(item: Item, checked = false, disabled: ItemCheck['disabled'] = false, unlink: ItemCheck['unlink'] = false) {
+  constructor(item: Item, checked: ItemCheck['checked'] = false, unlink: ItemCheck['unlink'] = false) {
     this.checked = checked;
-    this.disabled = disabled;
     this.unlink = unlink;
     this.item = item as CheckItem; // Lastly assigned to prevent children nodes from modifying by the checked assignment.
   }

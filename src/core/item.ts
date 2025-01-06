@@ -342,18 +342,6 @@ class Items {
   }
   /**
    * From With
-   * @description Map from Any Array to Item Array
-   * @type [T] Value Type
-   * @param [array] Array
-   * @param [identifyName] Identify Name
-   * @param [identifyValue] Identify Value
-   * @return New Item Array
-   */
-  static fromWith<T = any>(array: any[], identifyName: (origin: any) => string, identifyValue: (origin: any) => any = (origin: any) => origin): Item<T>[] {
-    return array.map(a => new Item<T>(identifyName(a), identifyValue(a)));
-  }
-  /**
-   * From Tree
    * @description Map from Any Array Tree
    * @type [T] Value Type
    * @param [array] Array
@@ -362,11 +350,9 @@ class Items {
    * @param [identifyChildren] Identify Children
    * @return New Item Array
    */
-  static fromTree<T = any>(array: any[], identifyName: (origin: any) => string, identifyValue: (origin: any) => any, identifyChildren: (origin: any) => []): Item<T>[] {
+  static fromWith<T = any>(array: any[], identifyName: (origin: any) => string, identifyValue: (origin: any) => any, identifyChildren: (origin: any) => []): Item<T>[] {
     return array.map(a => {
-      let children = identifyChildren(a) ?? [];
-
-      return new Item<T>(identifyName(a), identifyValue(a), children.length ? Items.fromTree(children, identifyName, identifyValue, identifyChildren) : []);
+      return new Item<T>(identifyName(a), identifyValue(a), Items.fromWith(identifyChildren(a) ?? [], identifyName, identifyValue, identifyChildren));
     });
   }
   /**
