@@ -127,10 +127,11 @@ map(transform: (item: Item) => any): Item
  * Filter
  * @description Filtering by members out of the value is not supported.
  * @param [identify] Identify Function
- * @param [reserve] Reserve the Identified Children Items even if the Parent Node is not Identified
+ * @param [reservedByChildren] Reserve the Identified Children Items even if the Parent Node is not Identified
+ * @param [reservedByParent] Reserve the Unidentified Children Items if the Parent Node is Identified
  * @return New Item
  */
-filter(identify: (item: Item) => boolean, reserve = true): Item
+filter(identify: (item: Item) => boolean, reservedByChildren = true, reservedByParent = false): Item
 ```
 
 #### prune
@@ -291,10 +292,11 @@ static map<T extends Item = Item, U extends Item = Item>(array: T[], transform: 
  * @type [T] Item Type
  * @param [array] Array
  * @param [identify] Identify Function
- * @param [reserve] Reserve
+ * @param [reservedByChildren] Reserved by Children
+ * @param [reservedByParent] Reserved by Parent
  * @return New Item Array
  */
-static filter<T extends Item = Item>(array: T[], identify: (item: T) => boolean, reserve = true): T[]
+static filter<T extends Item = Item>(array: T[], identify: (item: T) => boolean, reservedByChildren = true, reservedByParent = false): T[]
 ```
 
 #### prune

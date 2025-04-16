@@ -216,14 +216,19 @@ class Item<T = any> implements ItemType<T> {
    * Filter
    * @description Filtering by members out of the value is not supported.
    * @param [identify] Identify Function
-   * @param [reserve] Reserve the Identified Children Items even if the Parent Node is not Identified
+   * @param [reservedByChildren] Reserve the Identified Children Items even if the Parent Node is not Identified
+   * @param [reservedByParent] Reserve the Unidentified Children Items if the Parent Node is Identified
    * @return New Item
    */
-  filter(identify: (item: typeof this) => boolean, reserve = true): typeof this {
+  filter(identify: (item: typeof this) => boolean, reservedByChildren = true, reservedByParent = false): typeof this {
+    let identified = identify(this);
+
     let item = this._create(
       this.name,
       this.value,
-      this.children.map(a => a.filter(identify)).filter(a => identify(a) || (reserve && a.children.length)),
+      this.children
+        .map(a => a.filter(identify, reservedByChildren, reservedByParent))
+        .filter(a => identify(a) || (reservedByChildren && a.children.length) || (reservedByParent && identified)),
       Object.assign({}, this.meta)
     );
 
@@ -424,11 +429,12 @@ class Items {
    * @type [T] Item Type
    * @param [array] Array
    * @param [identify] Identify Function
-   * @param [reserve] Reserve
+   * @param [reservedByChildren] Reserved by Children
+   * @param [reservedByParent] Reserved by Parent
    * @return New Item Array
    */
-  static filter<T extends Item = Item>(array: T[], identify: (item: T) => boolean, reserve = true): T[] {
-    return array.map(a => a.filter(identify, reserve)).filter(a => identify(a) || (reserve && a.children.length));
+  static filter<T extends Item = Item>(array: T[], identify: (item: T) => boolean, reservedByChildren = true, reservedByParent = false): T[] {
+    return array.map(a => a.filter(identify, reservedByChildren, reservedByParent)).filter(a => identify(a) || (reservedByChildren && a.children.length));
   }
   /**
    * Prune

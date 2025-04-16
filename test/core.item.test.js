@@ -128,6 +128,13 @@ test('Item#filter', () => {
     expect(filtered.children[0].value).toBe(1);
     expect(filtered.children[1].value).toBe(2);
   }
+  {
+    let filtered = item.filter(a => a.value === 0, true, true);
+
+    expect(filtered).not.toBe(item);
+    expect(filtered.children).toHaveLength(1);
+    expect(filtered.children[0].children.length).toBe(3);
+  }
 });
 
 test('Item#prune', () => {
@@ -332,6 +339,16 @@ test('Items.filter', () => {
 
     expect(filtered).not.toBe(items);
     expect(filtered).toHaveLength(0);
+  }
+  {
+    items[0].children[0].children = [new Item('0-0', 0), new Item('0-1', 1), new Item('0-2', 2)];
+
+    let filtered = Items.filter(items, a => a.value === 0, true, true);
+
+    expect(filtered).not.toBe(items);
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0].children).toHaveLength(1);
+    expect(filtered[0].children[0].children.length).toBe(3);
   }
 });
 
